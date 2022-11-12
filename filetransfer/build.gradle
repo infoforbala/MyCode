@@ -1,0 +1,64 @@
+buildscript {
+   repositories {
+      mavenCentral()
+      maven {
+         url "https://plugins.gradle.org/m2/"      }
+      dependencies {
+         classpath('org.springframework.boot:spring-boot-gradle-plugin:2.3.10.RELEASE')
+         classpath('io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE')        
+      }
+   }
+}
+
+plugins {
+		id 'java'
+}
+
+group = 'com.tesco.plm.rms.filetransfer'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'org.apache.logging.log4j') {
+            details.useVersion '2.17.0'
+        }
+    }
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter:2.3.10.RELEASE'
+	modules {
+        module("org.springframework.boot:spring-boot-starter-logging") {
+            replacedBy("org.springframework.boot:spring-boot-starter-log4j2", "Use Log4j2 instead of Logback")
+        }
+    }
+	
+	implementation "org.springframework.boot:spring-boot-starter-log4j2:2.6.2"    
+	implementation 'commons-configuration:commons-configuration:1.10'
+    implementation 'org.junit.platform:junit-platform-commons:1.9.1'
+	compileOnly 'org.projectlombok:lombok:1.18.20'
+	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
+
+allprojects  {
+   apply plugin:  'org.springframework.boot'
+   apply plugin:  'java'
+   apply plugin: 'io.spring.dependency-management'
+}

@@ -1,0 +1,39 @@
+#################################################################################################
+#Created by  : Prabu Selvaraj
+#Date        : 01-NOV-2022
+#Jira        : RMSODS-11118
+#Description : filetransfer configuration set up
+##################################################################################################
+#whlistener service Servicectrlflag
+#off - Stop consuming the message from  topic
+#on - Start consuming the message from topic
+Servicectrlflag: on 
+
+#Microservice(whlistener.java) shutdown flag 
+#Y - shutdown the service
+#N - continue the process 
+serviceshutdown: N
+
+#sleep seconds
+sleepinmilliseconds: 10000
+  
+#log4j2.xml configuration path
+logging:
+  config: ${logpath}/whdataextract/config/log4j2.xml
+
+interfacename: wh;item
+
+#Export- filepath and file name
+whsourcepath: /whdataextract/eventprocess
+whdestinationpath: /whdataextract/eventinbound
+whstorelist: 1030,172.27.9.78,Y;1030,172.27.9.78,Y
+
+itemsourcepath: /whdataextract/eventprocess
+itemdestinationpath: /whdataextract/eventoutboundd
+itemstorelist: 1030,172.27.9.78,Y;
+
+retrycount: 3
+  
+
+
+
